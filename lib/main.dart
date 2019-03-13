@@ -1,8 +1,11 @@
 import 'dart:math';
-
+import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  debugPaintSizeEnabled = false;
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -81,21 +84,26 @@ class HomeApp extends StatelessWidget {
 
   Row buildDataRow() {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 40),
-          child: Text(
-            "گزارش آخرین دوره",
-            style: const TextStyle(
-                fontFamily: 'Iran',
-                fontSize: 16,
-                color: Color.fromARGB(255, 80, 80, 80)),
+        Expanded(
+          child: Center(
+            child: Text(
+              "گزارش آخرین دوره",
+
+              style: const TextStyle(
+                  fontFamily: 'Iran',
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 80, 80, 80)),
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Image.asset('assets/iconnews_and_feed.png'),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 26, left: 20),
+            child: Image.asset('assets/iconnews_and_feed.png'),
+          ),
         ),
       ],
     );
