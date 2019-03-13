@@ -27,59 +27,117 @@ class HomeApp extends StatelessWidget {
         title: Text("test ex"),
       ),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: buildCard(),
-          ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: CustomCard(
+                        text: "گزارش آخرین دوره",
+                        imageUri: 'assets/iconnews_and_feed.png'),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: CustomCard(
+                        text: "گزارش آخرین دوره",
+                        imageUri: 'assets/iconnews_and_feed.png'),
+                  ),
+                )
+              ],
+            ),
+            Center(
+              child: FractionallySizedBox(
+                widthFactor: 0.6,
+                child: CustomCard(
+                    text: "گزارش آخرین دوره",
+                    imageUri: 'assets/iconnews_and_feed.png'),
+              ),
+            ),
+            Center(
+              child: CustomCard(
+                  text: "خدمات ویژه نمایشگاه",
+                  imageUri: 'assets/iconproducts.png'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GradientButton(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "خرید کتاب نمایشگاه",
+                    style: TextStyle(fontFamily: "Iran", color: Colors.white, fontSize: 19),
+                  ),
+                ),
+                gradient: LinearGradient(
+                  colors: <Color>[Color(0xFF05D3B4),  Color(0xFF63E0A2)],
+                  end: Alignment.bottomCenter,
+                  begin: Alignment.topCenter
+                ),
+                onPressed: (){},
+              ),
+            )
+          ],
         ),
       ),
     );
   }
+}
+
+class CustomCard extends StatelessWidget {
+  final String text;
+  final String imageUri;
+
+  CustomCard({Key key, this.text, this.imageUri}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return buildCard();
+  }
 
   Widget buildCard() {
-    return FractionallySizedBox(
-      widthFactor: 0.8,
-      child: Container(
-          width: double.infinity,
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 2,
-                  spreadRadius: 2),
-            ],
-            color: Colors.white,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                Transform.scale(
-                  scale: 3,
-                  child: Transform.translate(
-                    offset: Offset(43, 20),
-                    child: Transform.rotate(
-                      angle: -pi / 3.5,
-                      child: Container(
-                        color: const Color(0xFFF5F5F5),
-                        width: double.infinity,
-                        height: double.infinity,
-                      ),
+    return Container(
+        width: double.infinity,
+        height: 70,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 2,
+                spreadRadius: 2),
+          ],
+          color: Colors.white,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Transform.scale(
+                scale: 3,
+                child: Transform.translate(
+                  offset: Offset(43, 20),
+                  child: Transform.rotate(
+                    angle: -pi / 3.5,
+                    child: Container(
+                      color: const Color(0xFFF5F5F5),
+                      width: double.infinity,
+                      height: double.infinity,
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: buildDataRow(),
-                ),
-              ],
-            ),
-          )),
-    );
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: buildDataRow(),
+              ),
+            ],
+          ),
+        ));
   }
 
   Row buildDataRow() {
@@ -87,13 +145,13 @@ class HomeApp extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Expanded(
-          child: Center(
+          child: Align(
+            alignment: Alignment.centerRight,
             child: Text(
-              "گزارش آخرین دوره",
-
+              text,
               style: const TextStyle(
                   fontFamily: 'Iran',
-                  fontSize: 16,
+                  fontSize: 15,
                   color: Color.fromARGB(255, 80, 80, 80)),
             ),
           ),
@@ -101,8 +159,11 @@ class HomeApp extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: Padding(
-            padding: const EdgeInsets.only(right: 26, left: 20),
-            child: Image.asset('assets/iconnews_and_feed.png'),
+            padding: const EdgeInsets.all(10),
+            child: Image.asset(
+              imageUri,
+              width: 40,
+            ),
           ),
         ),
       ],
@@ -110,19 +171,45 @@ class HomeApp extends StatelessWidget {
   }
 }
 
-
 class GradientButton extends StatelessWidget {
-//
-//  final Widget child;
-//  final Gradient gradient;
-//  final double width;
-//  final double height;
-//  final Function onPressed;
+  final Widget child;
+  final Gradient gradient;
+  final double width;
+  final double height;
+  final Function onPressed;
 
-
+  GradientButton(
+      {Key key,
+      this.child,
+      this.gradient,
+      this.width,
+      this.height,
+      this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FractionallySizedBox(
+      widthFactor: 0.8,
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 2,
+              color: Colors.white70,
+              spreadRadius: 2
+            )
+          ]
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: child,
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+    );
   }
 }
