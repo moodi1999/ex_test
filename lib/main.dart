@@ -80,11 +80,6 @@ class HomeApp extends StatelessWidget {
                     begin: Alignment.topCenter),
               ),
             ),
-            Container(
-              width: double.infinity,
-              height: 50,
-              color: Colors.orange,
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -98,26 +93,22 @@ class HomeApp extends StatelessWidget {
                           blurRadius: 4,
                           offset: Offset(0.7, 0.2))
                     ]),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-
-                            child: Text(
-                              "فراگستر الکترونیک",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: (){},
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[BuildText(), buildLogoImgs()],
+                          ),
+                        ),
+                        setImage()
+                      ],
                     ),
-                    setImage()
-                  ],
+                  ),
                 ),
               ),
             )
@@ -127,35 +118,114 @@ class HomeApp extends StatelessWidget {
     );
   }
 
+  Expanded buildLogoImgs() {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10, left: 10),
+          child: Row(
+            children: <Widget>[
+              Image.asset('assets/brandlogosample.png', scale: 2.1),
+              Container(width: 10,height: 0,),
+              Image.asset('assets/brandlogosample.png', scale: 3)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Align setImage() {
     return Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new Container(
-                            width: 90.0,
-                            height: 90.0,
-                            decoration: new BoxDecoration(
-                              color: Colors.white70,
-                              border: Border.all(color: Colors.white, width: 2),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black54,
-                                    blurRadius: 2,
-                                    offset: Offset(0.1, 0.4))
-                              ],
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                                child:
-                                    Image.asset('assets/iconproducts.png')),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
+        child: new Column(
+          children: <Widget>[
+            new Container(
+              width: 70,
+              height: 70,
+              decoration: new BoxDecoration(
+                color: Colors.white70,
+                border: Border.all(color: Colors.white, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 2,
+                      offset: Offset(0.1, 0.4))
+                ],
+                shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                  child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Image.asset(
+                  'assets/iconproducts.png',
+                  scale: 1.2,
+                ),
+              )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuildText extends StatelessWidget {
+  const BuildText({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Column(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                "فراگستر الکترونیک",
+                style: TextStyle(
+                    fontFamily: 'Iran',
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                "عرضه کننده محصولات ایمنی و امنیتی",
+                style: TextStyle(
+                    fontFamily: 'Iran',
+                    color: Colors.grey[500],
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Text(
+              "دوربین مداربسته #دوربین امنیتی #داهوا#",
+              style: TextStyle(
+                  fontFamily: 'Iran',
+                  color: Color(0xFF82B2A8),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
