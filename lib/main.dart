@@ -80,41 +80,6 @@ class HomeApp extends StatelessWidget {
                     begin: Alignment.topCenter),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {},
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        color: Colors.blue,
-                        height: 40,
-                        width: double.infinity,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            new Center(
-              child: new Container(
-                child: new Material(
-                  child: new InkWell(
-                    onTap: () {
-                      print("tapped");
-                    },
-                    child: new Container(
-                      width: 100.0,
-                      height: 100.0,
-                    ),
-                  ),
-                  color: Colors.transparent,
-                ),
-                color: Colors.orange,
-              ),
-            ),
           ],
         ),
       ),
@@ -170,6 +135,16 @@ class CustomCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                 child: buildDataRow(),
               ),
+              Material(
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                ),
+                color: Colors.transparent,
+              )
             ],
           ),
         ));
@@ -184,9 +159,10 @@ class CustomCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               text,
+              textAlign: TextAlign.right,
               style: const TextStyle(
                   fontFamily: 'Iran',
-                  fontSize: 15,
+                  fontSize: 14,
                   color: Color.fromARGB(255, 80, 80, 80)),
             ),
           ),
@@ -231,13 +207,15 @@ class GradientButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black45, offset: Offset(0.2, 1), blurRadius: 2)
+                  color: Colors.black45,
+                  offset: Offset(0.2, 0.6),
+                  blurRadius: 2)
             ]),
         child: Material(
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
               onTap: () {},
-              splashColor: Colors.white30,
+              splashColor: Colors.white54,
               child: new Container(
                 width: double.infinity,
                 height: double.infinity,
