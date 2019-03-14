@@ -80,10 +80,82 @@ class HomeApp extends StatelessWidget {
                     begin: Alignment.topCenter),
               ),
             ),
+            Container(
+              width: double.infinity,
+              height: 50,
+              color: Colors.orange,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 4,
+                          offset: Offset(0.7, 0.2))
+                    ]),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        children: <Widget>[
+                          Align(
+
+                            child: Text(
+                              "فراگستر الکترونیک",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    setImage()
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  Align setImage() {
+    return Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new Container(
+                            width: 90.0,
+                            height: 90.0,
+                            decoration: new BoxDecoration(
+                              color: Colors.white70,
+                              border: Border.all(color: Colors.white, width: 2),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 2,
+                                    offset: Offset(0.1, 0.4))
+                              ],
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipOval(
+                                child:
+                                    Image.asset('assets/iconproducts.png')),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
   }
 }
 
