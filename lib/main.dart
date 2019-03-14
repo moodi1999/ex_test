@@ -51,7 +51,7 @@ class HomeApp extends StatelessWidget {
             ),
             Center(
               child: FractionallySizedBox(
-                widthFactor: 0.6,
+                widthFactor: 0.8,
                 child: CustomCard(
                     text: "گزارش آخرین دوره",
                     imageUri: 'assets/iconnews_and_feed.png'),
@@ -69,17 +69,52 @@ class HomeApp extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     "خرید کتاب نمایشگاه",
-                    style: TextStyle(fontFamily: "Iran", color: Colors.white, fontSize: 19),
+                    style: TextStyle(
+                        fontFamily: "Iran", color: Colors.white, fontSize: 19),
                   ),
                 ),
+                onPressed: () {},
                 gradient: LinearGradient(
-                  colors: <Color>[Color(0xFF05D3B4),  Color(0xFF63E0A2)],
-                  end: Alignment.bottomCenter,
-                  begin: Alignment.topCenter
-                ),
-                onPressed: (){},
+                    colors: <Color>[Color(0xFF05D3B4), Color(0xFF63E0A2)],
+                    end: Alignment.bottomCenter,
+                    begin: Alignment.topCenter),
               ),
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.blue,
+                        height: 40,
+                        width: double.infinity,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            new Center(
+              child: new Container(
+                child: new Material(
+                  child: new InkWell(
+                    onTap: () {
+                      print("tapped");
+                    },
+                    child: new Container(
+                      width: 100.0,
+                      height: 100.0,
+                    ),
+                  ),
+                  color: Colors.transparent,
+                ),
+                color: Colors.orange,
+              ),
+            ),
           ],
         ),
       ),
@@ -120,7 +155,7 @@ class CustomCard extends StatelessWidget {
               Transform.scale(
                 scale: 3,
                 child: Transform.translate(
-                  offset: Offset(43, 20),
+                  offset: Offset(32, 20),
                   child: Transform.rotate(
                     angle: -pi / 3.5,
                     child: Container(
@@ -189,27 +224,26 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 0.8,
-      child: Container(
+    return Container(
         height: 40,
         decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2,
-              color: Colors.white70,
-              spreadRadius: 2
-            )
-          ]
-        ),
-        child: InkWell(
-          onTap: onPressed,
-          child: child,
-          borderRadius: BorderRadius.circular(30),
-        ),
-      ),
-    );
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black45, offset: Offset(0.2, 1), blurRadius: 2)
+            ]),
+        child: Material(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onTap: () {},
+              splashColor: Colors.white30,
+              child: new Container(
+                width: double.infinity,
+                height: double.infinity,
+                child: child,
+              ),
+            ),
+            color: Colors.transparent));
   }
 }
