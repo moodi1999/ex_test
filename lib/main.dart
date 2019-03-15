@@ -20,6 +20,13 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeApp extends StatelessWidget {
+  var _companies = [
+    "شرکت مهندسی رایورز",
+    "شرکت مهندسی یه چیزی گستر",
+    "شرکت مهندسی جیزز",
+    "شرکت مهندسی گادسیک"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,77 +34,92 @@ class HomeApp extends StatelessWidget {
         title: Text("test ex"),
       ),
       body: SafeArea(
-        child: Column(
+        child: buildColumn(),
+      ),
+    );
+  }
+
+  Widget buildColumn() {
+    return ListView(
+      children: <Widget>[
+        Row(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: CustomCard(
-                        text: "گزارش آخرین دوره",
-                        imageUri: 'assets/iconnews_and_feed.png'),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: CustomCard(
-                        text: "گزارش آخرین دوره",
-                        imageUri: 'assets/iconnews_and_feed.png'),
-                  ),
-                )
-              ],
-            ),
-            Center(
-              child: FractionallySizedBox(
-                widthFactor: 0.8,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
                 child: CustomCard(
                     text: "گزارش آخرین دوره",
                     imageUri: 'assets/iconnews_and_feed.png'),
               ),
             ),
-            Center(
-              child: CustomCard(
-                  text: "خدمات ویژه نمایشگاه",
-                  imageUri: 'assets/iconproducts.png'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GradientButton(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "خرید کتاب نمایشگاه",
-                    style: TextStyle(
-                        fontFamily: "Iran", color: Colors.white, fontSize: 19),
-                  ),
-                ),
-                onPressed: () {},
-                gradient: LinearGradient(
-                    colors: <Color>[Color(0xFF05D3B4), Color(0xFF63E0A2)],
-                    end: Alignment.bottomCenter,
-                    begin: Alignment.topCenter),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: BuildInfoCard(
-                height: 150,
-                brandImage: BuildBrandImage(),
-                infoText: BuildInfoText(
-                  topText: buildTextTop(),
-                  midText: buildTextmid(),
-                  botText: buildTextBottom(),
-                ),
-                productIcon: BuildProductIcon(
-                  imageUri: 'assets/iconproducts.png',
-                ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: CustomCard(
+                    text: "گزارش آخرین دوره",
+                    imageUri: 'assets/iconproducts.png'),
               ),
             )
           ],
         ),
-      ),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: CustomCard(
+                    text: "گزارش آخرین دوره",
+                    imageUri: 'assets/iconproducts.png'),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: CustomCard(
+                    text: "گزارش آخرین دوره",
+                    imageUri: 'assets/iconnews_and_feed.png'),
+              ),
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GradientButton(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "خرید کتاب نمایشگاه",
+                style: TextStyle(
+                    fontFamily: "Iran", color: Colors.white, fontSize: 19),
+              ),
+            ),
+            onPressed: () {},
+            gradient: LinearGradient(
+                colors: <Color>[Color(0xFF05D3B4), Color(0xFF63E0A2)],
+                end: Alignment.bottomCenter,
+                begin: Alignment.topCenter),
+          ),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+                children: _companies
+                    .map(
+                      (compName) => BuildInfoCard(
+                            height: 150,
+                            brandImage: BuildBrandImage(),
+                            infoText: BuildInfoText(
+                              topText: buildTextTop(compName),
+                              midText: buildTextmid(),
+                              botText: buildTextBottom(),
+                            ),
+                            productIcon: BuildProductIcon(
+                              imageUri: 'assets/iconproducts.png',
+                            ),
+                          ),
+                    )
+                    .toList()))
+      ],
     );
   }
 
@@ -123,9 +145,9 @@ class HomeApp extends StatelessWidget {
     );
   }
 
-  Text buildTextTop() {
+  Text buildTextTop(String name) {
     return Text(
-      "فراگستر الکترونیک",
+      name,
       style: TextStyle(
           fontFamily: 'Iran',
           color: Colors.black,
@@ -157,47 +179,50 @@ class BuildInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-          color: cardColor,
-          borderRadius: BorderRadius.circular(cardRadius),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black54, blurRadius: 4, offset: Offset(0.7, 0.2))
-          ]),
-      child: Material(
-        type: MaterialType.transparency,
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(cardRadius),
-          onTap: () {},
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    infoText,
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 10, left: 10),
-                          child: brandImage,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: height,
+        decoration: BoxDecoration(
+            color: cardColor,
+            borderRadius: BorderRadius.circular(cardRadius),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black54, blurRadius: 4, offset: Offset(0.7, 0.2))
+            ]),
+        child: Material(
+          type: MaterialType.transparency,
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(cardRadius),
+            onTap: () {},
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      infoText,
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10, left: 10),
+                            child: brandImage,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
-                  child: productIcon,
-                ),
-              )
-            ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
+                    child: productIcon,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
