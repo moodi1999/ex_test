@@ -82,33 +82,16 @@ class HomeApp extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: BuildInfoCard(
                 height: 150,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 4,
-                          offset: Offset(0.7, 0.2))
-                    ]),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: (){},
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            children: <Widget>[BuildText(), buildLogoImgs()],
-                          ),
-                        ),
-                        setImage()
-                      ],
-                    ),
-                  ),
+                brandImage: BuildBrandImage(),
+                infoText: BuildInfoText(
+                  topText: buildTextTop(),
+                  midText: buildTextmid(),
+                  botText: buildTextBottom(),
+                ),
+                productIcon: BuildProductIcon(
+                  imageUri: 'assets/iconproducts.png',
                 ),
               ),
             )
@@ -118,65 +101,139 @@ class HomeApp extends StatelessWidget {
     );
   }
 
-  Expanded buildLogoImgs() {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 10),
+  Text buildTextBottom() {
+    return Text(
+      "دوربین مداربسته #دوربین امنیتی #داهوا#",
+      style: TextStyle(
+          fontFamily: 'Iran',
+          color: Color(0xFF82B2A8),
+          fontSize: 12,
+          fontWeight: FontWeight.bold),
+    );
+  }
+
+  Text buildTextmid() {
+    return Text(
+      "عرضه کننده محصولات ایمنی و امنیتی",
+      style: TextStyle(
+          fontFamily: 'Iran',
+          color: Colors.grey[500],
+          fontSize: 15,
+          fontWeight: FontWeight.bold),
+    );
+  }
+
+  Text buildTextTop() {
+    return Text(
+      "فراگستر الکترونیک",
+      style: TextStyle(
+          fontFamily: 'Iran',
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class BuildInfoCard extends StatelessWidget {
+  final double height;
+  final double width;
+  final Color cardColor;
+  final double cardRadius;
+  final BuildInfoText infoText;
+  final BuildProductIcon productIcon;
+  final BuildBrandImage brandImage;
+
+  BuildInfoCard(
+      {Key key,
+      this.height,
+      this.width,
+      this.cardColor = Colors.white,
+      this.cardRadius = 8,
+      this.infoText,
+      this.productIcon,
+      this.brandImage})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(cardRadius),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black54, blurRadius: 4, offset: Offset(0.7, 0.2))
+          ]),
+      child: Material(
+        type: MaterialType.transparency,
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(cardRadius),
+          onTap: () {},
           child: Row(
             children: <Widget>[
-              Image.asset('assets/brandlogosample.png', scale: 2.1),
-              Container(width: 10,height: 0,),
-              Image.asset('assets/brandlogosample.png', scale: 3)
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    infoText,
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10, left: 10),
+                          child: brandImage,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
+                  child: productIcon,
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Align setImage() {
-    return Align(
-      alignment: Alignment.topRight,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
-        child: new Column(
-          children: <Widget>[
-            new Container(
-              width: 70,
-              height: 70,
-              decoration: new BoxDecoration(
-                color: Colors.white70,
-                border: Border.all(color: Colors.white, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black54,
-                      blurRadius: 2,
-                      offset: Offset(0.1, 0.4))
-                ],
-                shape: BoxShape.circle,
-              ),
-              child: ClipOval(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Image.asset(
-                  'assets/iconproducts.png',
-                  scale: 1.2,
-                ),
-              )),
-            ),
-          ],
+class BuildBrandImage extends StatelessWidget {
+  BuildBrandImage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Image.asset('assets/brandlogosample.png', scale: 2.1),
+        Container(
+          width: 10,
+          height: 0,
         ),
-      ),
+        Image.asset('assets/brandlogosample.png', scale: 3)
+      ],
     );
   }
 }
 
-class BuildText extends StatelessWidget {
-  const BuildText({
-    Key key,
-  }) : super(key: key);
+class BuildInfoText extends StatelessWidget {
+  final Text topText;
+  final Text midText;
+  final Text botText;
+
+  const BuildInfoText(
+      {Key key,
+      @required this.topText,
+      @required this.midText,
+      @required this.botText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -188,43 +245,59 @@ class BuildText extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                "فراگستر الکترونیک",
-                style: TextStyle(
-                    fontFamily: 'Iran',
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
+              child: topText,
             ),
           ),
           Align(
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                "عرضه کننده محصولات ایمنی و امنیتی",
-                style: TextStyle(
-                    fontFamily: 'Iran',
-                    color: Colors.grey[500],
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
+              child: midText,
             ),
           ),
           Align(
             alignment: Alignment.topRight,
-            child: Text(
-              "دوربین مداربسته #دوربین امنیتی #داهوا#",
-              style: TextStyle(
-                  fontFamily: 'Iran',
-                  color: Color(0xFF82B2A8),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold),
-            ),
+            child: botText,
           ),
         ],
       ),
+    );
+  }
+}
+
+class BuildProductIcon extends StatelessWidget {
+  final String imageUri;
+
+  BuildProductIcon({Key key, this.imageUri}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        new Container(
+          width: 70,
+          height: 70,
+          decoration: new BoxDecoration(
+            color: Colors.white70,
+            border: Border.all(color: Colors.white, width: 2),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 2,
+                  offset: Offset(0.1, 0.4))
+            ],
+            shape: BoxShape.circle,
+          ),
+          child: ClipOval(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Image.asset(
+              imageUri,
+              scale: 1.2,
+            ),
+          )),
+        ),
+      ],
     );
   }
 }
