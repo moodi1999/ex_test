@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
 
 class HomeApp extends StatelessWidget {
   var _companies = [
-    "شرکت مهندسی رایورز",
-    "شرکت مهندسی یه چیزی گستر",
-    "شرکت مهندسی جیزز",
-    "شرکت مهندسی گادسیک"
+    "test comp 11",
+    "test comp 12",
+    "test comp 13",
+    "test comp 14",
   ];
 
   @override
