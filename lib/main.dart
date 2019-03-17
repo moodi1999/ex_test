@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:ex_test/CustomAppBar.dart';
+import 'package:ex_test/CustomSpceBar.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: HomeApp(),
@@ -30,18 +33,282 @@ class HomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("test ex"),
-      ),
-      body: SafeArea(
-        child: buildColumn(),
+      body: buildColumn(),
+    );
+  }
+
+
+
+  List<String> _tabs = ["همه", "خارجی", "داخلی", "تولید کننده", "صادرکننده"];
+
+  Color white90 = Colors.white.withOpacity(0.95);
+  BouncingScrollPhysics scrollPhysics = new BouncingScrollPhysics();
+
+  Widget buildColumn() {
+    return DefaultTabController(
+      length: _tabs.length, // This is the number of tabs.
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          // These are the slivers that show up in the "outer" scroll view.
+          return <Widget>[
+            SliverOverlapAbsorber(
+              // This widget takes the overlapping behavior of the SliverAppBar,
+              // and redirects it to the SliverOverlapInjector below. If it is
+              // missing, then it is possible for the nested "inner" scroll view
+              // below to end up under the SliverAppBar even when the inner
+              // scroll view thinks it has not been scrolled.
+              // This is not necessary if the "headerSliverBuilder" only builds
+              // widgets that do not overlap the next sliver.
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              child: CustomSliverAppBar(
+                backgroundColor: Colors.white,
+                toolbarHeight: 56,
+                // This is the title in the app bar.
+                pinned: true,
+                expandedHeight: 150.0,
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(30),
+                            child: Icon(
+                              IconData(59574, fontFamily: 'MaterialIcons'),
+                              color: Colors.black,
+                            ),
+                          ),
+                        )),
+                  ),
+                ],
+                // The "forceElevated" property causes the SliverAppBar to show
+                // a shadow. The "innerBoxIsScrolled" parameter is true when the
+                // inner scroll view is scrolled beyond its "zero" point, i.e.
+                // when it appears to be scrolled below the SliverAppBar.
+                // Without this, there are cases where the shadow would appear
+                // or not appear inappropriately, because the SliverAppBar is
+                // not actually aware of the precise position of the inner
+                // scroll views.
+                flexibleSpace: CustomFlexibleSpaceBar(
+                  title: Text(
+                    "اسلیور تست",
+                    style: TextStyle(fontFamily: 'Iran', color: Colors.black),
+                  ),
+                ),
+                forceElevated: innerBoxIsScrolled,
+                bottom: TabBar(
+                  labelPadding: EdgeInsets.only(left: 20, right: 20),
+                  isScrollable: true,
+                  labelColor: Colors.black,
+                  indicatorWeight: 2,
+                  indicatorColor: Colors.greenAccent,
+                  indicator: CustomTabIndicator(),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  // These are the widgets to put in each tab in the tab bar.
+                  tabs: _tabs.map((String name) => Tab(child: Text(name, style: TextStyle(fontFamily: 'Iran'),))).toList(),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: TabBarView(
+          // These are the contents of the tab views, below the tabs.
+          children: _tabs.map((String name) {
+            return SafeArea(
+              top: false,
+              bottom: false,
+              child: Builder(
+                // This Builder is needed to provide a BuildContext that is "inside"
+                // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+                // find the NestedScrollView.
+                builder: (BuildContext context) {
+                  return CustomScrollView(
+                    // The "controller" and "primary" members should be left
+                    // unset, so that the NestedScrollView can control this
+                    // inner scroll view.
+                    // If the "controller" property is set, then this scroll
+                    // view will not be associated with the NestedScrollView.
+                    // The PageStorageKey should be unique to this ScrollView;
+                    // it allows the list to remember its scroll position when
+                    // the tab view is not on the screen.
+                    key: PageStorageKey<String>(name),
+                    slivers: <Widget>[
+                      SliverOverlapInjector(
+                        // This is the flip side of the SliverOverlapAbsorber above.
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(8.0),
+                        // In this example, the inner scroll view has
+                        // fixed-height list items, hence the use of
+                        // SliverFixedExtentList. However, one could use any
+                        // sliver widget here, e.g. SliverList or SliverGrid.
+                        sliver: SliverFixedExtentList(
+                          // The items in this example are fixed to 48 pixels
+                          // high. This matches the Material Design spec for
+                          // ListTile widgets.
+                          itemExtent: 48.0,
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              // This builder is called for each child.
+                              // In this example, we just number each list item.
+                              return ListTile(
+                                title: Text('Item $index'),
+                              );
+                            },
+                            // The childCount of the SliverChildBuilderDelegate
+                            // specifies how many children this inner list
+                            // has. In this example, each tab has a list of
+                            // exactly 30 items, but this is arbitrary.
+                            childCount: 30,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
-  Widget buildColumn() {
-    return ListView(
-      children: <Widget>[
+  CustomScrollView buildCustomScrollView() {
+    return CustomScrollView(
+      physics: null,
+      slivers: [
+        SliverAppBar(
+          backgroundColor: Colors.white,
+          expandedHeight: 90,
+          elevation: 0,
+          pinned: true,
+          floating: false,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(30),
+                      child: Icon(
+                        IconData(59574, fontFamily: 'MaterialIcons'),
+                        color: Colors.black,
+                      ),
+                    ),
+                  )),
+            ),
+          ],
+          flexibleSpace: CustomFlexibleSpaceBar(
+            title: Text(
+              "اسلیور تست",
+              style: TextStyle(fontFamily: 'Iran', color: Colors.black),
+            ),
+          ),
+        ),
+        CustomSliverAppBar(
+          elevation: 6,
+          toolbarHeight: 40,
+          backgroundColor: white90,
+          primary: false,
+          pinned: true,
+          floating: false,
+        ),
+        SliverList(
+            delegate: SliverChildListDelegate([
+          PageView(
+            children: <Widget>[
+              ListView(children: <Widget>[
+                Column(
+                  children: buildChildren(),
+                ),
+              ]),
+              Column(
+                children: buildChildren(),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                      children: _companies
+                          .map(
+                            (compName) => BuildInfoCard(
+                                  height: 150,
+                                  brandImage: BuildBrandImage(),
+                                  infoText: BuildInfoText(
+                                    topText: buildTextTop(compName),
+                                    midText: buildTextmid(),
+                                    botText: buildTextBottom(),
+                                  ),
+                                  productIcon: BuildProductIcon(
+                                    imageUri: 'assets/iconproducts.png',
+                                  ),
+                                ),
+                          )
+                          .toList()))
+            ],
+          ),
+        ])),
+      ],
+    );
+  }
+
+  List<Widget> buildChildren() {
+    return <Widget>[
+      Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: CustomCard(
+                  text: "گزارش آخرین دوره",
+                  imageUri: 'assets/iconnews_and_feed.png'),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: CustomCard(
+                  text: "گزارش آخرین دوره",
+                  imageUri: 'assets/iconproducts.png'),
+            ),
+          )
+        ],
+      ),
+      Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: CustomCard(
+                  text: "گزارش آخرین دوره",
+                  imageUri: 'assets/iconnews_and_feed.png'),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: CustomCard(
+                  text: "گزارش آخرین دوره",
+                  imageUri: 'assets/iconproducts.png'),
+            ),
+          )
+        ],
+      ),
+    ];
+  }
+
+  SliverList buildSliverList() {
+    return SliverList(
+        delegate: SliverChildListDelegate(
+      [
         Row(
           children: <Widget>[
             Expanded(
@@ -120,7 +387,7 @@ class HomeApp extends StatelessWidget {
                     )
                     .toList()))
       ],
-    );
+    ));
   }
 
   Text buildTextBottom() {
@@ -188,7 +455,9 @@ class BuildInfoCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(cardRadius),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black54, blurRadius: 4, offset: Offset(0.7, 0.2))
+                  color: Colors.black54,
+                  blurRadius: 4,
+                  offset: Offset(0.7, 0.2))
             ]),
         child: Material(
           type: MaterialType.transparency,
@@ -206,7 +475,8 @@ class BuildInfoCard extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(bottom: 10, left: 10),
+                            padding:
+                                const EdgeInsets.only(bottom: 10, left: 10),
                             child: brandImage,
                           ),
                         ),
@@ -217,7 +487,8 @@ class BuildInfoCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 16, left: 10, right: 10),
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 10, right: 10),
                     child: productIcon,
                   ),
                 )
@@ -463,5 +734,41 @@ class GradientButton extends StatelessWidget {
               ),
             ),
             color: Colors.transparent));
+  }
+}
+
+class CustomTabIndicator extends Decoration {
+  @override
+  _CustomPainter createBoxPainter([VoidCallback onChanged]) {
+    return new _CustomPainter(this, onChanged);
+  }
+}
+
+class _CustomPainter extends BoxPainter {
+  final CustomTabIndicator decoration;
+
+  var indicatorHeight = 20.0;
+
+  _CustomPainter(this.decoration, VoidCallback onChanged)
+      : assert(decoration != null),
+        super(onChanged);
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    assert(configuration != null);
+    assert(configuration.size != null);
+
+    //offset is the position from where the decoration should be drawn.
+    //configuration.size tells us about the height and width of the tab.
+    final Rect rect = Offset(offset.dx - 5,
+            (configuration.size.height / 2.2) - (indicatorHeight / 2)) &
+        Size(configuration.size.width + 10, indicatorHeight);
+
+    final Paint paint = Paint();
+    paint.color = Colors.green;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = 2;
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, Radius.circular(5.0)), paint);
   }
 }
