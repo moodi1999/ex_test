@@ -143,28 +143,29 @@ class HomeApp extends StatelessWidget {
                         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                             context),
                       ),
-                      SliverPadding(
-                        padding: const EdgeInsets.all(8.0),
-                        // In this example, the inner scroll view has
-                        // fixed-height list items, hence the use of
-                        // SliverFixedExtentList. However, one could use any
-                        // sliver widget here, e.g. SliverList or SliverGrid.
-                        sliver: SliverFixedExtentList(
-                          // The items in this example are fixed to 48 pixels
-                          // high. This matches the Material Design spec for
-                          // ListTile widgets.
-                          itemExtent: 48.0,
-                          delegate: SliverChildListDelegate(
-                            [
-                              Container(
-                                height: 40,
-                                width: double.infinity,
-                                color: Colors.orange,
-                              )
-                            ]
-                          ),
-                        ),
-                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate([
+                          Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Column(
+                                  children: _companies
+                                      .map(
+                                        (compName) => BuildInfoCard(
+                                      height: 150,
+                                      brandImage: BuildBrandImage(),
+                                      infoText: BuildInfoText(
+                                        topText: buildTextTop(compName),
+                                        midText: buildTextmid(),
+                                        botText: buildTextBottom(),
+                                      ),
+                                      productIcon: BuildProductIcon(
+                                        imageUri: 'assets/iconproducts.png',
+                                      ),
+                                    ),
+                                  )
+                                      .toList()))
+                        ]),
+                      )
                     ],
                   );
                 },
@@ -758,7 +759,7 @@ class _CustomPainter extends BoxPainter {
     //offset is the position from where the decoration should be drawn.
     //configuration.size tells us about the height and width of the tab.
     final Rect rect = Offset(offset.dx - 5,
-            (configuration.size.height / 1.4) - (indicatorHeight / 2)) &
+            (configuration.size.height / 1.3) - (indicatorHeight / 2)) &
         Size(configuration.size.width + 10, indicatorHeight);
 
     final Paint paint = Paint();

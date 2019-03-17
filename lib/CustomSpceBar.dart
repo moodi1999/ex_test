@@ -226,7 +226,7 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
               bottom: 40.0,
             );
         final double scaleValue =
-            Tween<double>(begin: 1.1, end: 0.8).transform(t);
+            Tween<double>(begin: 1.1, end: 0.8).transform(t - 0.5);
         final Matrix4 scaleTransform = Matrix4.identity()
           ..scale(scaleValue, scaleValue, 1);
 
@@ -237,7 +237,6 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
         children.add(Stack(
           children: <Widget>[
             Container(
-              color: Colors.orange,
               padding: padding,
               child: Transform(
                 alignment: titleAlignment,
