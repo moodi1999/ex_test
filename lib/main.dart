@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:ex_test/CustomAppBar.dart';
 import 'package:ex_test/CustomSpceBar.dart';
+import 'package:ex_test/FlexibleSpaceBarRTL.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 
@@ -91,10 +92,12 @@ class HomeApp extends StatelessWidget {
                 // or not appear inappropriately, because the SliverAppBar is
                 // not actually aware of the precise position of the inner
                 // scroll views.
-                flexibleSpace: CustomFlexibleSpaceBar(
+                flexibleSpace: CustomFlexibleSpaceBar (
                   title: Text(
                     "اسلیور تست",
                     style: TextStyle(fontFamily: 'Iran', color: Colors.black),
+
+
                   ),
                 ),
                 forceElevated: innerBoxIsScrolled,
@@ -151,19 +154,14 @@ class HomeApp extends StatelessWidget {
                           // high. This matches the Material Design spec for
                           // ListTile widgets.
                           itemExtent: 48.0,
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              // This builder is called for each child.
-                              // In this example, we just number each list item.
-                              return ListTile(
-                                title: Text('Item $index'),
-                              );
-                            },
-                            // The childCount of the SliverChildBuilderDelegate
-                            // specifies how many children this inner list
-                            // has. In this example, each tab has a list of
-                            // exactly 30 items, but this is arbitrary.
-                            childCount: 30,
+                          delegate: SliverChildListDelegate(
+                            [
+                              Container(
+                                height: 40,
+                                width: double.infinity,
+                                color: Colors.orange,
+                              )
+                            ]
                           ),
                         ),
                       ),

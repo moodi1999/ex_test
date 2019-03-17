@@ -1,24 +1,5 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-import 'dart:math' as math;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-/// The collapsing effect while the space bar expands or collapses.
-enum CollapseMode {
-  /// The background widget will scroll in a parallax fashion.
-  parallax,
-
-  /// The background widget pin in place until it reaches the min extent.
-  pin,
-
-  /// The background widget will act as normal with no collapsing effect.
-  none,
-}
+import 'dart:math' as math;
 
 /// The part of a material design [AppBar] that expands and collapses.
 ///
@@ -28,26 +9,26 @@ enum CollapseMode {
 /// app.
 ///
 /// The widget that sizes the [AppBar] must wrap it in the widget returned by
-/// [CustomFlexibleSpaceBar.createSettings], to convey sizing information down to the
-/// [CustomFlexibleSpaceBar].
+/// [FlexibleSpaceBarRTL.createSettings], to convey sizing information down to the
+/// [FlexibleSpaceBarRTL].
 ///
 /// See also:
 ///
 ///  * [SliverAppBar], which implements the expanding and contracting.
 ///  * [AppBar], which is used by [SliverAppBar].
 ///  * <https://material.io/design/components/app-bars-top.html#behavior>
-class CustomFlexibleSpaceBar extends StatefulWidget {
+class FlexibleSpaceBarRTL extends StatefulWidget {
   /// Creates a flexible space bar.
   ///
   /// Most commonly used in the [AppBar.flexibleSpace] field.
-  const CustomFlexibleSpaceBar({
+  const FlexibleSpaceBarRTL({
     Key key,
     this.title,
     this.background,
     this.centerTitle,
     this.titlePadding,
     this.collapseMode = CollapseMode.parallax,
-  })  : assert(collapseMode != null),
+  }) : assert(collapseMode != null),
         super(key: key);
 
   /// The primary contents of the flexible space bar when expanded.
@@ -84,16 +65,16 @@ class CustomFlexibleSpaceBar extends StatefulWidget {
   final EdgeInsetsGeometry titlePadding;
 
   /// Wraps a widget that contains an [AppBar] to convey sizing information down
-  /// to the [CustomFlexibleSpaceBar].
+  /// to the [FlexibleSpaceBarRTL].
   ///
   /// Used by [Scaffold] and [SliverAppBar].
   ///
   /// `toolbarOpacity` affects how transparent the text within the toolbar
   /// appears. `minExtent` sets the minimum height of the resulting
-  /// [CustomFlexibleSpaceBar] when fully collapsed. `maxExtent` sets the maximum
-  /// height of the resulting [CustomFlexibleSpaceBar] when fully expanded.
-  /// `currentExtent` sets the scale of the [CustomFlexibleSpaceBar.background] and
-  /// [CustomFlexibleSpaceBar.title] widgets of [CustomFlexibleSpaceBar] upon
+  /// [FlexibleSpaceBarRTL] when fully collapsed. `maxExtent` sets the maximum
+  /// height of the resulting [FlexibleSpaceBarRTL] when fully expanded.
+  /// `currentExtent` sets the scale of the [FlexibleSpaceBarRTL.background] and
+  /// [FlexibleSpaceBarRTL.title] widgets of [FlexibleSpaceBarRTL] upon
   /// initialization.
   ///
   /// See also:
@@ -118,12 +99,12 @@ class CustomFlexibleSpaceBar extends StatefulWidget {
   }
 
   @override
-  _CustomFlexibleSpaceBarState createState() => _CustomFlexibleSpaceBarState();
+  _FlexibleSpaceBarRTLState createState() => _FlexibleSpaceBarRTLState();
 }
-
-class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
+class _FlexibleSpaceBarRTLState extends State<FlexibleSpaceBarRTL> {
   bool _getEffectiveCenterTitle(ThemeData theme) {
-    if (widget.centerTitle != null) return widget.centerTitle;
+    if (widget.centerTitle != null)
+      return widget.centerTitle;
     assert(theme.platform != null);
     switch (theme.platform) {
       case TargetPlatform.android:
@@ -136,16 +117,7 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
   }
 
   Alignment _getTitleAlignment(bool effectiveCenterTitle) {
-    if (effectiveCenterTitle) return Alignment.bottomCenter;
-    final TextDirection textDirection = Directionality.of(context);
-    assert(textDirection != null);
-    switch (textDirection) {
-      case TextDirection.rtl:
-        return Alignment.bottomRight;
-      case TextDirection.ltr:
-        return Alignment.bottomLeft;
-    }
-    return null;
+    return Alignment.bottomRight;
   }
 
   double _getCollapsePadding(double t, FlexibleSpaceBarSettings settings) {
@@ -163,10 +135,8 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
 
   @override
   Widget build(BuildContext context) {
-    final FlexibleSpaceBarSettings settings =
-        context.inheritFromWidgetOfExactType(FlexibleSpaceBarSettings);
-    assert(settings != null,
-        'A FlexibleSpaceBar must be wrapped in the widget returned by FlexibleSpaceBar.createSettings().');
+    final FlexibleSpaceBarSettings settings = context.inheritFromWidgetOfExactType(FlexibleSpaceBarSettings);
+    assert(settings != null, 'A FlexibleSpaceBar must be wrapped in the widget returned by FlexibleSpaceBar.createSettings().');
 
     final List<Widget> children = <Widget>[];
 
@@ -174,14 +144,11 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
 
     // 0.0 -> Expanded
     // 1.0 -> Collapsed to toolbar
-    final double t =
-        (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
-            .clamp(0.0, 1.0);
+    final double t = (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent).clamp(0.0, 1.0);
 
     // background image
     if (widget.background != null) {
-      final double fadeStart =
-          math.max(0.0, 1.0 - kToolbarHeight / deltaExtent);
+      final double fadeStart = math.max(0.0, 1.0 - kToolbarHeight / deltaExtent);
       const double fadeEnd = 1.0;
       assert(fadeStart <= fadeEnd);
       final double opacity = 1.0 - Interval(fadeStart, fadeEnd).transform(t);
@@ -201,57 +168,44 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
 
     if (widget.title != null) {
       Widget title;
-      switch (defaultTargetPlatform) {
-        case TargetPlatform.iOS:
-          title = widget.title;
-          break;
-        case TargetPlatform.fuchsia:
-        case TargetPlatform.android:
-          title = Semantics(
-            namesRoute: true,
-            child: widget.title,
-          );
-      }
+
+      title = Semantics(
+        namesRoute: true,
+        child: widget.title,
+      );
 
       final ThemeData theme = Theme.of(context);
       final double opacity = settings.toolbarOpacity;
       if (opacity > 0.0) {
         TextStyle titleStyle = theme.primaryTextTheme.title;
-        titleStyle =
-            titleStyle.copyWith(color: titleStyle.color.withOpacity(opacity));
+        titleStyle = titleStyle.copyWith(
+            color: titleStyle.color.withOpacity(opacity)
+        );
         final bool effectiveCenterTitle = _getEffectiveCenterTitle(theme);
+        final double padValue = Tween<double>(begin: 15.0, end: 50.0).transform(t);
+
         final EdgeInsetsGeometry padding = widget.titlePadding ??
             EdgeInsetsDirectional.only(
-              start: effectiveCenterTitle ? 0.0 : 70.0,
-              bottom: 40.0,
+              end: effectiveCenterTitle ? 0.0 : padValue,
+              bottom: 30.0,
             );
-        final double scaleValue =
-            Tween<double>(begin: 1.1, end: 0.8).transform(t);
+        final double scaleValue = Tween<double>(begin: 1.5, end: 1.0).transform(t);
         final Matrix4 scaleTransform = Matrix4.identity()
-          ..scale(scaleValue, scaleValue, 1);
-
-        final double transformValue =
-            Tween<double>(begin: 0.65, end: 0.5).transform(t);
-        final Alignment titleAlignment = Alignment(transformValue, 0.5);
-
-        children.add(Stack(
-          children: <Widget>[
-            Container(
-              color: Colors.orange,
-              padding: padding,
-              child: Transform(
-                alignment: titleAlignment,
-                transform: scaleTransform,
-                child: Align(
-                  alignment: titleAlignment,
-                  child: DefaultTextStyle(
-                    style: titleStyle,
-                    child: title,
-                  ),
-                ),
+          ..scale(scaleValue, scaleValue, 1.0);
+        final Alignment titleAlignment = _getTitleAlignment(effectiveCenterTitle);
+        children.add(Container(
+          padding: padding,
+          child: Transform(
+            alignment: titleAlignment,
+            transform: scaleTransform,
+            child: Align(
+              alignment: titleAlignment,
+              child: DefaultTextStyle(
+                style: titleStyle,
+                child: title,
               ),
             ),
-          ],
+          ),
         ));
       }
     }
