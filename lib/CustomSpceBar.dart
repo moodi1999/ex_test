@@ -223,19 +223,19 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
         final EdgeInsetsGeometry padding = widget.titlePadding ??
             EdgeInsetsDirectional.only(
               start: effectiveCenterTitle ? 0.0 : 70.0,
-              bottom: 40.0,
+              bottom: 20.0,
             );
         final double scaleValue =
             Tween<double>(begin: 1.1, end: 0.8).transform(t);
         final Matrix4 scaleTransform = Matrix4.identity()
-          ..scale(scaleValue, scaleValue, 1);
+          ..scale(scaleValue, scaleValue, 0);
 
         final double t2 =
         (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
             .clamp(0.0, 1.0);
 
         final double transformValue =
-            Tween<double>(begin: 0.7, end: 0.5).transform(t2);
+            Tween<double>(begin: 0.7, end: 0.5).transform(t);
         final Alignment titleAlignment = Alignment(transformValue, 0.4);
 
         children.add(Stack(

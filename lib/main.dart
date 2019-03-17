@@ -37,8 +37,6 @@ class HomeApp extends StatelessWidget {
     );
   }
 
-
-
   List<String> _tabs = ["همه", "خارجی", "داخلی", "تولید کننده", "صادرکننده"];
 
   Color white90 = Colors.white.withOpacity(0.95);
@@ -46,6 +44,7 @@ class HomeApp extends StatelessWidget {
 
   Widget buildColumn() {
     return DefaultTabController(
+      initialIndex: _tabs.length - 1,
       length: _tabs.length, // This is the number of tabs.
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -65,7 +64,7 @@ class HomeApp extends StatelessWidget {
                 toolbarHeight: 56,
                 // This is the title in the app bar.
                 pinned: true,
-                expandedHeight: 150.0,
+                expandedHeight: 140.0,
                 actions: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(right: 4),
@@ -108,7 +107,7 @@ class HomeApp extends StatelessWidget {
                   indicator: CustomTabIndicator(),
                   indicatorSize: TabBarIndicatorSize.label,
                   // These are the widgets to put in each tab in the tab bar.
-                  tabs: _tabs.map((String name) => Tab(child: Text(name, style: TextStyle(fontFamily: 'Iran'),))).toList(),
+                  tabs: _tabs.reversed.map((String name) => Tab(child: Text(name, style: TextStyle(fontFamily: 'Iran'),))).toList(),
                 ),
               ),
             ),
@@ -747,7 +746,7 @@ class CustomTabIndicator extends Decoration {
 class _CustomPainter extends BoxPainter {
   final CustomTabIndicator decoration;
 
-  var indicatorHeight = 20.0;
+  var indicatorHeight = 2.0;
 
   _CustomPainter(this.decoration, VoidCallback onChanged)
       : assert(decoration != null),
@@ -761,13 +760,13 @@ class _CustomPainter extends BoxPainter {
     //offset is the position from where the decoration should be drawn.
     //configuration.size tells us about the height and width of the tab.
     final Rect rect = Offset(offset.dx - 5,
-            (configuration.size.height / 2.2) - (indicatorHeight / 2)) &
+            (configuration.size.height / 1.4) - (indicatorHeight / 2)) &
         Size(configuration.size.width + 10, indicatorHeight);
 
     final Paint paint = Paint();
     paint.color = Colors.green;
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 2;
+    paint.strokeWidth = 3;
     canvas.drawRRect(
         RRect.fromRectAndRadius(rect, Radius.circular(5.0)), paint);
   }
